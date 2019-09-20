@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+        <variable
+            name="user"
+            type="com.example.login_app.LoginViewModel"
+            />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <EditText
+            android:id="@+id/loginField"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="600px"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="20px"
+            android:gravity="center_vertical"
+            android:hint="Login"
+            android:text="@={user.login}"
+            android:textSize="15pt"
+            app:layout_constraintBottom_toTopOf="@+id/passwordField"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/passwordField"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="600px"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/loginField"
+            android:layout_centerVertical="true"
+            android:layout_margin="20px"
+            android:gravity="center_vertical"
+            android:hint="Password"
+            android:inputType="textWebPassword"
+            android:text="@={user.password}"
+            android:textSize="15pt"
+            app:layout_constraintBottom_toTopOf="@+id/loginButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:textSize="15pt"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
