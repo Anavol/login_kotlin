@@ -6,7 +6,7 @@
 
     <data>
         <variable
-            name="user"
+            name="viewModel"
             type="com.example.login_app.LoginViewModel"
             />
     </data>
@@ -25,7 +25,7 @@
             android:layout_margin="20px"
             android:gravity="center_vertical"
             android:hint="Login"
-            android:text="@={user.login}"
+            android:text="@={viewModel.user.login}"
             android:textSize="15pt"
             app:layout_constraintBottom_toTopOf="@+id/passwordField"
             app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +42,7 @@
             android:gravity="center_vertical"
             android:hint="Password"
             android:inputType="textWebPassword"
-            android:text="@={user.password}"
+            android:text="@={viewModel.user.password}"
             android:textSize="15pt"
             app:layout_constraintBottom_toTopOf="@+id/loginButton"
             app:layout_constraintEnd_toEndOf="parent"

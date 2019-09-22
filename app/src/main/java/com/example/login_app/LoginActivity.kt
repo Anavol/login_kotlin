@@ -3,7 +3,6 @@ package com.example.login_app
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.example.login_app.databinding.ActivityLoginBinding
@@ -22,18 +21,14 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         model = ViewModelProviders.of(this).get(LoginViewModel::class.java)
         val binding: ActivityLoginBinding = DataBindingUtil.setContentView(
-            this, R.layout.activity_login
-        ) as ActivityLoginBinding
-
-        binding.user = model
+            this, R.layout.activity_login)
+        binding.viewModel = model
         binding.setLifecycleOwner(this)
 
         loginButton.setOnClickListener {
-
-            if ((model.login.value.toString() != "null") && (model.password.value.toString() != "null")) {
-
+            if ((!model.getLogin().isNullOrEmpty()) && (!model.getPassword().isNullOrEmpty())) {
                imitateDelay(3000)
-                startActivity(mainIntent.putExtra("name", model.login.value.toString()))
+                startActivity(mainIntent.putExtra("name", model.getLogin()))
             }
             else {
                 val toast = Toast.makeText(
