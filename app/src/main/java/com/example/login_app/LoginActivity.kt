@@ -20,11 +20,6 @@ class LoginActivity : AppCompatActivity() {
         val mainIntent = Intent(this, MainActivity::class.java)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-     //   progressBar.visibility=View.GONE
-      //  loginButton.visibility = View.VISIBLE
-     //   loginField.visibility = View.VISIBLE
-     //   passwordField.visibility = View.VISIBLE
-
         model = ViewModelProviders.of(this).get(LoginViewModel::class.java)
         val binding: ActivityLoginBinding = DataBindingUtil.setContentView(
             this, R.layout.activity_login
@@ -36,13 +31,8 @@ class LoginActivity : AppCompatActivity() {
         loginButton.setOnClickListener {
 
             if ((model.login.value.toString() != "null") && (model.password.value.toString() != "null")) {
-             ///   loginButton.visibility = View.GONE
-             //   loginField.visibility = View.GONE
-             //   passwordField.visibility = View.GONE
-            //    progressBar.visibility = View.VISIBLE
-               runBlocking{
-                    delay(3000)
-               }
+
+               imitateDelay(3000)
                 startActivity(mainIntent.putExtra("name", model.login.value.toString()))
             }
             else {
@@ -53,6 +43,11 @@ class LoginActivity : AppCompatActivity() {
                 toast.show()
             }
 
+        }
+    }
+    private fun imitateDelay(time: Long) = runBlocking {
+        launch {
+            delay(time)
         }
     }
 }
