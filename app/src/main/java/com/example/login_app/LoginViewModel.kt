@@ -2,9 +2,10 @@ package com.example.login_app
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.*
 
-class LoginViewModel(loginFunction: (login: String, password: String) -> (Unit)): ViewModel() {
-     val loginFunction = loginFunction
+class LoginViewModel(loginModel: LoginModel): ViewModel() {
+     val loginModel = loginModel
      var login = MutableLiveData<String>()
           .apply {
                value = ""
@@ -13,7 +14,32 @@ class LoginViewModel(loginFunction: (login: String, password: String) -> (Unit))
           .apply {
                value = ""
           }
+     var isLoading = MutableLiveData<Boolean>()
+          .apply {
+          value = false
+     }
+     var errorMessage = MutableLiveData<String>()
+          .apply {
+              value =""
+            }
+
      fun onClickLogin(){
-               loginFunction(login.value.toString(), password.value.toString())
+
+          var result = loginModel.login(login.value.toString(), password.value.toString())
+          if (result is LoginResult.Error){
+            errorMessage.value = result.message
+
+          }
+          else
+              if (result is LoginResult.Success){
+                  errorMessage.value = ""
+                  isLoading.value = true
+                    runBlocking {
+                        val job = loginModel.load(result.login)
+                        joinAll()
+                    }
+                  isLoading.value = false
+              }
+
      }
 }
