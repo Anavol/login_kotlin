@@ -6,38 +6,44 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.example.login_app.databinding.ActivityLoginBinding
-import kotlinx.android.synthetic.main.activity_login.*
 import android.widget.Toast
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.*
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() , LoginModel {
 
-    private lateinit var model: LoginViewModel
+    private lateinit var viewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val mainIntent = Intent(this, MainActivity::class.java)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        model = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory { LoginViewModel(::login) }).get(LoginViewModel(::login)::class.java)
         val binding: ActivityLoginBinding = DataBindingUtil.setContentView(
-            this, R.layout.activity_login)
-        binding.viewModel = model
-        binding.setLifecycleOwner(this)
+           this, R.layout.activity_login)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+    }
 
-        loginButton.setOnClickListener {
-            if ((!model.getLogin().isNullOrEmpty()) && (!model.getPassword().isNullOrEmpty())) {
-               imitateDelay(3000)
-                startActivity(mainIntent.putExtra("name", model.getLogin()))
-            }
-            else {
-                val toast = Toast.makeText(
-                    applicationContext,
-                    "Поля не должны быть пустыми", Toast.LENGTH_SHORT
-                )
-                toast.show()
-            }
+    private inline fun <VM : ViewModel> viewModelFactory(crossinline f: () -> VM) =
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(aClass: Class<T>):T = f() as T
+        }
 
+
+    override fun login(login: String, password: String) {
+        if ((!login.isNullOrEmpty()) && (!password.isNullOrEmpty())) {
+            imitateDelay(3000)
+            val mainIntent = Intent(this, MainActivity::class.java)
+            startActivity(mainIntent.putExtra("name", login))
+        }
+        else {
+            val toast = Toast.makeText(
+                applicationContext,
+                "Поля не должны быть пустыми", Toast.LENGTH_SHORT
+            )
+            toast.show()
         }
     }
     private fun imitateDelay(time: Long) = runBlocking {
