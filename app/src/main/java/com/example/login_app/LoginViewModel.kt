@@ -34,9 +34,11 @@ class LoginViewModel(loginModel: LoginModel): ViewModel() {
               if (result is LoginResult.Success){
                   errorMessage.value = ""
                   isLoading.value = true
-                  if (GlobalScope.launch {
+                  GlobalScope.launch(Dispatchers.Main) {
                       loginModel.load(result.login)
-                  }.isCompleted)  isLoading.value = false
+                      isLoading.value = false
+                      loginModel.startNew(result.login)
+                      }
               }
      }
 }

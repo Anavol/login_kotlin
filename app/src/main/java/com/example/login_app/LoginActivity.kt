@@ -9,8 +9,6 @@ import com.example.login_app.databinding.ActivityLoginBinding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.*
-import kotlin.coroutines.coroutineContext
-
 
 class LoginActivity : AppCompatActivity() , LoginModel {
 
@@ -40,12 +38,13 @@ class LoginActivity : AppCompatActivity() , LoginModel {
         }
     }
 
-    override fun load(login: String)  {
+    override suspend fun load(login: String) {
+        delay(3000)
+    }
+    override fun startNew(login: String) {
         val mainIntent = Intent(this, MainActivity::class.java)
-            GlobalScope.async {
-                delay(3000)
-                startActivity(mainIntent.putExtra("name", login))
-            }
+        startActivity(mainIntent.putExtra("name", login))
+
     }
 }
 
