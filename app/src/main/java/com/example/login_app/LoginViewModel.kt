@@ -34,12 +34,9 @@ class LoginViewModel(loginModel: LoginModel): ViewModel() {
               if (result is LoginResult.Success){
                   errorMessage.value = ""
                   isLoading.value = true
-                    runBlocking {
-                        val job = loginModel.load(result.login)
-                        joinAll()
-                    }
-                  isLoading.value = false
+                  if (GlobalScope.launch {
+                      loginModel.load(result.login)
+                  }.isCompleted)  isLoading.value = false
               }
-
      }
 }

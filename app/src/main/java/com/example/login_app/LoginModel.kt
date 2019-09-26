@@ -2,7 +2,7 @@ package com.example.login_app
 
 interface LoginModel {
     fun login(login: String, password: String): LoginResult
-    suspend fun load(login: String)
+    fun load(login: String)
 }
 
 sealed class LoginResult {

@@ -40,14 +40,12 @@ class LoginActivity : AppCompatActivity() , LoginModel {
         }
     }
 
-    override suspend fun load(login: String)  {
-
-            GlobalScope.async {
-                delay(5000)
-            }
-
+    override fun load(login: String)  {
         val mainIntent = Intent(this, MainActivity::class.java)
-        startActivity(mainIntent.putExtra("name", login))
+            GlobalScope.async {
+                delay(3000)
+                startActivity(mainIntent.putExtra("name", login))
+            }
     }
 }
 
