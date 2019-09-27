@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     >
-
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.login_app.SearchViewModel"
+            />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -11,15 +15,39 @@
 
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/textWelcome"
             android:layout_width="600px"
             android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="15pt"
+            android:text="@{viewModel.welcome}"
+            android:textSize="12pt"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.154" />
+
+        <EditText
+            android:id="@+id/textQuery"
+            android:layout_width="307dp"
+            android:layout_height="77dp"
+            android:layout_marginTop="100dp"
+            android:textSize="12pt"
+            android:text="@{viewModel.searchQuery}"
+            android:hint="Запрос"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textWelcome" />
+        <TextView
+            android:id="@+id/textResponse"
+            android:layout_width="307dp"
+            android:layout_height="77dp"
+            android:layout_marginTop="100dp"
+            android:textSize="12pt"
+            android:text="@{viewModel.searchResponse}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textQuery" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
