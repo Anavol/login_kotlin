@@ -6,11 +6,9 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.example.login_app.databinding.ActivityLoginBinding
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.*
-
 
 class LoginActivity : AppCompatActivity() , LoginModel {
 
@@ -19,7 +17,7 @@ class LoginActivity : AppCompatActivity() , LoginModel {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        viewModel = ViewModelProviders.of(this, viewModelFactory { LoginViewModel(::login) }).get(LoginViewModel(::login)::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory { LoginViewModel(this) }).get(LoginViewModel(this)::class.java)
         val binding: ActivityLoginBinding = DataBindingUtil.setContentView(
            this, R.layout.activity_login)
         binding.viewModel = viewModel
@@ -31,25 +29,22 @@ class LoginActivity : AppCompatActivity() , LoginModel {
             override fun <T : ViewModel> create(aClass: Class<T>):T = f() as T
         }
 
-
-    override fun login(login: String, password: String) {
+    override fun login(login: String, password: String): LoginResult {
         if ((!login.isNullOrEmpty()) && (!password.isNullOrEmpty())) {
-            imitateDelay(3000)
-            val mainIntent = Intent(this, MainActivity::class.java)
-            startActivity(mainIntent.putExtra("name", login))
+            return LoginResult.Success(login = login)
         }
         else {
-            val toast = Toast.makeText(
-                applicationContext,
-                "Поля не должны быть пустыми", Toast.LENGTH_SHORT
-            )
-            toast.show()
+            return LoginResult.Error(message = "Поля не должны быть пустыми")
         }
     }
-    private fun imitateDelay(time: Long) = runBlocking {
-        launch {
-            delay(time)
-        }
+
+    override suspend fun load(login: String) {
+        delay(3000)
+    }
+    override fun startNew(login: String) {
+        val mainIntent = Intent(this, MainActivity::class.java)
+        startActivity(mainIntent.putExtra("name", login))
+
     }
 }
 
